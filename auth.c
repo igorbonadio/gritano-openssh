@@ -695,3 +695,12 @@ fakepw(void)
 
 	return (&fake);
 }
+
+char *
+authorized_keys_script(struct passwd *pw)
+{
+	if (options.authorized_keys_script)
+		return expand_authorized_keys(options.authorized_keys_script, pw);
+	else
+		return NULL;
+}

@@ -153,6 +153,8 @@ typedef struct {
 
 	u_int num_authkeys_files;	/* Files containing public keys */
 	char   *authorized_keys_files[MAX_AUTHKEYS_FILES];
+	
+	char   *authorized_keys_script;
 
 	char   *adm_forced_command;
 

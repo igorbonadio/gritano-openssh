@@ -139,6 +139,7 @@ initialize_server_options(ServerOptions *options)
 	options->revoked_keys_file = NULL;
 	options->trusted_user_ca_keys = NULL;
 	options->authorized_principals_file = NULL;
+	options->authorized_keys_script = NULL;
 	options->ip_qos_interactive = -1;
 	options->ip_qos_bulk = -1;
 	options->version_addendum = NULL;
@@ -323,6 +324,7 @@ typedef enum {
 	sBanner, sUseDNS, sHostbasedAuthentication,
 	sHostbasedUsesNameFromPacketOnly, sClientAliveInterval,
 	sClientAliveCountMax, sAuthorizedKeysFile,
+	sAuthorizedKeysScript,
 	sGssAuthentication, sGssCleanupCreds, sAcceptEnv, sPermitTunnel,
 	sMatch, sPermitOpen, sForceCommand, sChrootDirectory,
 	sUsePrivilegeSeparation, sAllowAgentForwarding,
@@ -440,6 +442,7 @@ static struct {
 	{ "clientalivecountmax", sClientAliveCountMax, SSHCFG_GLOBAL },
 	{ "authorizedkeysfile", sAuthorizedKeysFile, SSHCFG_ALL },
 	{ "authorizedkeysfile2", sDeprecated, SSHCFG_ALL },
+	{ "authorizedkeysscript", sAuthorizedKeysScript, SSHCFG_ALL },
 	{ "useprivilegeseparation", sUsePrivilegeSeparation, SSHCFG_GLOBAL},
 	{ "acceptenv", sAcceptEnv, SSHCFG_ALL },
 	{ "permittunnel", sPermitTunnel, SSHCFG_ALL },
@@ -1330,9 +1333,14 @@ process_server_config_line(ServerOptions *options, char *line,
 			}
 		}
 		return 0;
+		
+	case sAuthorizedKeysScript:
+		charptr = &options->authorized_keys_script;
+		goto parse_tilde_filename;
 
 	case sAuthorizedPrincipalsFile:
 		charptr = &options->authorized_principals_file;
+parse_tilde_filename:
 		arg = strdelim(&cp);
 		if (!arg || *arg == '\0')
 			fatal("%s line %d: missing file name.",
@@ -1904,6 +1912,7 @@ dump_config(ServerOptions *o)
 	dump_cfg_string(sChrootDirectory, o->chroot_directory);
 	dump_cfg_string(sTrustedUserCAKeys, o->trusted_user_ca_keys);
 	dump_cfg_string(sRevokedKeys, o->revoked_keys_file);
+	dump_cfg_string(sAuthorizedKeysScript, o->authorized_keys_script);
 	dump_cfg_string(sAuthorizedPrincipalsFile,
 	    o->authorized_principals_file);
 	dump_cfg_string(sVersionAddendum, o->version_addendum);
