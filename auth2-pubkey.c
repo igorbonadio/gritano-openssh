@@ -303,7 +303,7 @@ user_key_found_by_script(struct passwd *pw, Key *key, char *file)
 		dup2(pipe_out[1], 1);
 		close(pipe_out[1]);
 
-		execl(file, file, NULL);
+		execl(file, file, file, NULL);
 
 		/* exec failed */
 		error("execl(): %s", strerror(errno));
