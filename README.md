@@ -5,8 +5,3 @@ This is a patched OpenSSH v6.1p1 version used by [Gritano](https://github.com/ig
 
 - [OpenSSH](http://www.openssh.com/)
 - [OpenSSH for Git](https://github.com/wuputahllc/openssh-for-git)
-
-More Information
-----------------
-
-The original OpenSSH README was renamed to README_original.
